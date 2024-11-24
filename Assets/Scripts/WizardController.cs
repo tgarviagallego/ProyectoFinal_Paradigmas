@@ -29,6 +29,7 @@ public class WizardController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
+            animator.SetBool("jumping", true);
             Jump();
         }
     }
@@ -91,6 +92,7 @@ public class WizardController : MonoBehaviour
             if (contact.normal.y > 0.7f)
             {
                 isGrounded = true;
+                animator.SetBool("jumping", false);
                 break;
             }
         }
