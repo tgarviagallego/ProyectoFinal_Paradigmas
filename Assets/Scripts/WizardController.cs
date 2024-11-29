@@ -1,20 +1,27 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class WizardController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-    public float speed;
-    public float jumpForce;
+    public float speed = 5f;
+    public float jumpForce = 7f;
+    public GameObject fireSpell;
+    public GameObject iceSpell;
+    public GameObject deadSpell;
+    public float spellSpeed = 5f;
+    public float maxSpellDistance = 10f;
+
+    [SerializeField] private float rotationSpeed = 50f;
 
     private float horizontal;
-    private float vertical;
     private bool isGrounded;
 
     private Animator animator;
     private Rigidbody rb;
 
-    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -22,67 +29,97 @@ public class WizardController : MonoBehaviour
         isGrounded = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        HandleRotation();
-
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            animator.SetBool("jumping", true);
             Jump();
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            ThrowSpell(fireSpell);
+        }
+        else if (Input.GetKeyDown(KeyCode.N))
+        {
+            ThrowSpell(iceSpell);
+        }
+        else if (Input.GetKeyDown(KeyCode.B))
+        {
+            ThrowSpell(deadSpell);
         }
     }
 
-    private void HandleRotation()
+    void FixedUpdate()
     {
-        if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.LeftArrow))
+        horizontal = Input.GetAxisRaw("Horizontal");
+
+        if (horizontal != 0)
         {
-            transform.localRotation = Quaternion.Euler(0.0f, -45.0f, 0.0f);
+            Quaternion targetRotation = Quaternion.Euler(0.0f, horizontal * rotationSpeed * Time.fixedDeltaTime, 0.0f);
+            rb.MoveRotation(rb.rotation * targetRotation);
         }
-        else if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.RightArrow))
+
+        if (Input.GetKey(KeyCode.UpArrow))
         {
-            transform.localRotation = Quaternion.Euler(0.0f, 45.0f, 0.0f);
+            Vector3 forwardMovement = transform.forward * speed * Time.fixedDeltaTime;
+            rb.MovePosition(rb.position + forwardMovement);
         }
-        else if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.LeftArrow))
+        animator.SetBool("running", Input.GetKey(KeyCode.UpArrow));
+    }
+
+    private void ThrowSpell(GameObject spell)
+    {
+        animator.SetBool("attacking", true);
+        Vector3 spawnPosition = transform.position + transform.forward * 1.5f + new Vector3(0, 1, 0);
+        GameObject spellInstance = Instantiate(spell, spawnPosition, transform.rotation);
+
+        Rigidbody spellRb = spellInstance.GetComponent<Rigidbody>();
+        if (spellRb == null)
         {
-            transform.localRotation = Quaternion.Euler(0.0f, 225.0f, 0.0f);
+            spellRb = spellInstance.AddComponent<Rigidbody>();
         }
-        else if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.RightArrow))
+
+        spellRb.useGravity = false;
+        spellRb.constraints = RigidbodyConstraints.FreezeRotation;
+
+        Vector3 spellDirection = transform.forward;
+
+        spellRb.velocity = spellDirection * spellSpeed;
+
+        StartCoroutine(DestroySpellAfterDistance(spellInstance, spellRb));
+        StartCoroutine(EndAttackAnimation());
+    }
+
+    private IEnumerator EndAttackAnimation()
+    {
+        yield return new WaitForSeconds(0.20f);
+        animator.SetBool("attacking", false);
+    }
+
+    private IEnumerator DestroySpellAfterDistance(GameObject spellObj, Rigidbody spellRb)
+    {
+        Vector3 startPosition = spellObj.transform.position;
+
+        while (spellObj != null)
         {
-            transform.localRotation = Quaternion.Euler(0.0f, 135.0f, 0.0f);
-        }
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            transform.localRotation = Quaternion.Euler(0.0f, transform.localRotation.y + 90.0f, 0.0f);
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            transform.localRotation = Quaternion.Euler(0.0f, transform.localRotation.y - 90.0f, 0.0f);
-        }
-        else if (Input.GetKey(KeyCode.UpArrow))
-        {
-            transform.localRotation = Quaternion.Euler(0.0f, transform.localRotation.y, 0.0f);
-        }
-        else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            transform.localRotation = Quaternion.Euler(0.0f, transform.localRotation.y + 180.0f, 0.0f);
+            float distanceTraveled = Vector3.Distance(startPosition, spellObj.transform.position);
+
+            if (distanceTraveled >= maxSpellDistance)
+            {
+                Destroy(spellObj);
+                yield break;
+            }
+
+            yield return null;
         }
     }
 
     private void Jump()
     {
+        animator.SetBool("jumping", true);
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         isGrounded = false;
-    }
-
-    private void FixedUpdate()
-    {
-        horizontal = Input.GetAxisRaw("Horizontal");
-        vertical = Input.GetAxisRaw("Vertical");
-
-        rb.velocity = new Vector3(horizontal * speed, rb.velocity.y, vertical * speed);
-        animator.SetBool("running", (horizontal != 0.0f) || (vertical != 0.0f));
     }
 
     private void OnCollisionEnter(Collision collision)

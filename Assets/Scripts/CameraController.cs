@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public GameObject player;
+    public Vector3 offset = new Vector3(0, 5, 10);
 
     // Start is called before the first frame update
     void Start()
@@ -17,11 +18,13 @@ public class CameraController : MonoBehaviour
     {
         if (player != null)
         {
-            Vector3 position = transform.position;
-            position.x = player.transform.position.x;
-            position.z = player.transform.position.z - 10;
-            position.y = player.transform.position.y+10;
-            transform.position = position;
+            Vector3 desiredPosition = player.transform.position + offset;
+
+            Quaternion rotation = Quaternion.Euler(0.0f, player.transform.rotation.eulerAngles.y, 0.0f);
+
+            transform.position = player.transform.position - rotation*offset;
+
+            transform.LookAt(player.transform);
         }
     }
 }
