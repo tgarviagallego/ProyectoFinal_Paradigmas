@@ -4539,6 +4539,11 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!4 &564244140 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4463868907105534, guid: ccd8c3b89aa02e943a08ab9238a8a70c, type: 3}
+  m_PrefabInstance: {fileID: 564244134}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &569535364
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12249,8 +12254,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1d5392725043d0409978be93770d990, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 564244135}
-  offset: {x: 0, y: -3, z: 10}
+  mouseSensitivity: 6
+  target: {fileID: 564244140}
+  distanceFromTarget: 6
+  smoothTime: 3
 --- !u!1 &1374169895
 GameObject:
   m_ObjectHideFlags: 0

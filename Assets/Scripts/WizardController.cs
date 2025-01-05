@@ -36,15 +36,15 @@ public class PlayerController : MonoBehaviour
             Jump();
         }
 
-        if (Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             ThrowSpell(fireSpell);
         }
-        else if (Input.GetKeyDown(KeyCode.N))
+        else if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             ThrowSpell(iceSpell);
         }
-        else if (Input.GetKeyDown(KeyCode.B))
+        else if (Input.GetKeyDown(KeyCode.Q))
         {
             ThrowSpell(deadSpell);
         }

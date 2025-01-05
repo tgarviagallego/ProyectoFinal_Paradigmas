@@ -1,30 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class CameraController : MonoBehaviour
 {
-    public GameObject player;
-    public Vector3 offset = new Vector3(0, 5, 10);
+    [SerializeField] private float mouseSensitivity = 3.0f;
+    [SerializeField] private Transform target;
+    [SerializeField] private float distanceFromTarget = 3.0f;
+    [SerializeField] private float smoothTime = 0.2f;
+    [SerializeField] private float verticalOffset = 1.5f;
 
-    // Start is called before the first frame update
+    private float rotationY;
+    private float rotationX;
+    private Vector3 currentRotation;
+    private Vector3 smoothVelocity = Vector3.zero;
+
     void Start()
     {
-
+        Cursor.lockState = CursorLockMode.Locked;    
     }
-
-    // Update is called once per frame
     void Update()
     {
-        if (player != null)
-        {
-            Vector3 desiredPosition = player.transform.position + offset;
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-            Quaternion rotation = Quaternion.Euler(0.0f, player.transform.rotation.eulerAngles.y, 0.0f);
+        rotationY += mouseX;
+        rotationX -= mouseY;
 
-            transform.position = player.transform.position - rotation*offset;
+        rotationX = Mathf.Clamp(rotationX, -40, 40);
 
-            transform.LookAt(player.transform);
-        }
+        Vector3 nextRotation = new Vector3(rotationX, rotationY);
+        currentRotation = Vector3.SmoothDamp(currentRotation, nextRotation,ref smoothVelocity, smoothTime);
+
+        transform.localEulerAngles = new Vector3(rotationX, rotationY, 0);
+
+        transform.position = target.position-transform.forward*distanceFromTarget+transform.up*verticalOffset;
     }
 }
