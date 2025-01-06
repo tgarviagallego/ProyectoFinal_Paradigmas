@@ -1,77 +1,157 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 5f;
-    public float jumpForce = 7f;
+    [SerializeField] private float walkSpeed = 6f;
+    [SerializeField] private float walkBackwardsSpeed = 4f;
+    [SerializeField] private float runSpeed = 12f;
+    [SerializeField] private float rotateSpeed = 120f;
+    [SerializeField] private float jumpForce = 7f;
+    private bool isWalking = false;
+    private bool isJumping = true;
+    private bool isAttacking = false;
+    private float oldWalkSpeed;
+    private float moveSpeed;
+    private bool isGrounded;
+    private Animator animator;
+    private Rigidbody rb;
+
     public GameObject fireSpell;
     public GameObject iceSpell;
     public GameObject deadSpell;
-    public float spellSpeed = 5f;
-    public float maxSpellDistance = 10f;
-
-    [SerializeField] private float rotationSpeed = 50f;
-
-    private float horizontal;
-    private bool isGrounded;
-
-    private Animator animator;
-    private Rigidbody rb;
+    public float spellSpeed = 10f;
+    public float maxSpellDistance = 20f;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         isGrounded = true;
+        oldWalkSpeed = walkSpeed;
+        animator.SetBool("walkRight", false);
+        animator.SetBool("walkLeft", false);
+        animator.SetBool("idle", true);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (!isAttacking)
+        {
+            if (Input.GetKey(KeyCode.A))
+            {
+                transform.Rotate(Vector3.up, -rotateSpeed * Time.deltaTime);
+                if (!isWalking && !isJumping)
+                {
+                    animator.SetBool("walkRight", true);
+                    animator.SetBool("walkLeft", false);
+                    animator.SetBool("idle", false);
+                }
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                transform.Rotate(Vector3.up, rotateSpeed * Time.deltaTime);
+                if (!isWalking && !isJumping)
+                {
+                    animator.SetBool("walkLeft", true);
+                    animator.SetBool("walkRight", false);
+                    animator.SetBool("idle", false);
+                }
+            }
+            else if (!isJumping)
+            {
+                animator.SetBool("walkRight", false);
+                animator.SetBool("walkLeft", false);
+                animator.SetBool("idle", true);
+            }
+
+            moveSpeed = walkSpeed;
+            if (Input.GetKey(KeyCode.W))
+            {
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    moveSpeed = runSpeed;
+                    if (!isJumping) ActivateAnimation("sprint");
+                }
+                else
+                {
+                    if (!isJumping) ActivateAnimation("walk");
+                }
+
+                Vector3 moveDirection = transform.forward * moveSpeed;
+                rb.velocity = new Vector3(moveDirection.x, rb.velocity.y, moveDirection.z);
+                isWalking = true;
+            }
+            else if (Input.GetKey(KeyCode.S))
+            {
+                Vector3 moveDirection = -transform.forward * walkBackwardsSpeed;
+                rb.velocity = new Vector3(moveDirection.x, rb.velocity.y, moveDirection.z);
+                if (!isJumping)
+                {
+                    ActivateAnimation("walkback");
+                }
+                isWalking = true;
+            }
+            else
+            {
+                rb.velocity = new Vector3(0, rb.velocity.y, 0);
+                if (isWalking && !isJumping)
+                {
+                    ActivateAnimation("idle");
+                    isWalking = false;
+                }
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isJumping)
         {
             Jump();
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (!isAttacking && !isJumping)
         {
-            ThrowSpell(fireSpell);
-        }
-        else if (Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            ThrowSpell(iceSpell);
-        }
-        else if (Input.GetKeyDown(KeyCode.Q))
-        {
-            ThrowSpell(deadSpell);
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                ThrowSpell(fireSpell);
+            }
+            else if (Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                ThrowSpell(iceSpell);
+            }
+            else if (Input.GetKeyDown(KeyCode.Q))
+            {
+                ThrowSpell(deadSpell);
+            }
         }
     }
 
-    void FixedUpdate()
+    private void ActivateAnimation(string animation)
     {
-        horizontal = Input.GetAxisRaw("Horizontal");
-
-        if (horizontal != 0)
+        string[] animationsBools = new string[] { "idle", "walk", "walkback", "walkRight", "walkLeft", "sprint", "jump" };
+        foreach (string animationBool in animationsBools)
         {
-            Quaternion targetRotation = Quaternion.Euler(0.0f, horizontal * rotationSpeed * Time.fixedDeltaTime, 0.0f);
-            rb.MoveRotation(rb.rotation * targetRotation);
+            if (animationBool != animation)
+            {
+                animator.SetBool(animationBool, false);
+            }
+            else
+            {
+                animator.SetBool(animation, true);
+            }
         }
-
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            Vector3 forwardMovement = transform.forward * speed * Time.fixedDeltaTime;
-            rb.MovePosition(rb.position + forwardMovement);
-        }
-        animator.SetBool("running", Input.GetKey(KeyCode.UpArrow));
     }
 
     private void ThrowSpell(GameObject spell)
     {
-        animator.SetBool("attacking", true);
-        Vector3 spawnPosition = transform.position + transform.forward * 1.5f + new Vector3(0, 1, 0);
+        isAttacking = true;
+        animator.SetBool("attack", true);
+        animator.SetBool("walk", false);
+        animator.SetBool("walkback", false);
+        animator.SetBool("sprint", false);
+        animator.SetBool("walkLeft", false);
+        animator.SetBool("walkRight", false);
+
+        Vector3 spawnPosition = transform.position + transform.forward * 1.5f + Vector3.up;
         GameObject spellInstance = Instantiate(spell, spawnPosition, transform.rotation);
 
         Rigidbody spellRb = spellInstance.GetComponent<Rigidbody>();
@@ -83,9 +163,7 @@ public class PlayerController : MonoBehaviour
         spellRb.useGravity = false;
         spellRb.constraints = RigidbodyConstraints.FreezeRotation;
 
-        Vector3 spellDirection = transform.forward;
-
-        spellRb.velocity = spellDirection * spellSpeed;
+        spellRb.velocity = transform.forward * spellSpeed;
 
         StartCoroutine(DestroySpellAfterDistance(spellInstance, spellRb));
         StartCoroutine(EndAttackAnimation());
@@ -94,7 +172,20 @@ public class PlayerController : MonoBehaviour
     private IEnumerator EndAttackAnimation()
     {
         yield return new WaitForSeconds(0.20f);
-        animator.SetBool("attacking", false);
+        animator.SetBool("attack", false);
+        isAttacking = false;
+
+        if (!isJumping)
+        {
+            if (isWalking)
+            {
+                ActivateAnimation("walk");
+            }
+            else
+            {
+                ActivateAnimation("idle");
+            }
+        }
     }
 
     private IEnumerator DestroySpellAfterDistance(GameObject spellObj, Rigidbody spellRb)
@@ -117,7 +208,14 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        animator.SetBool("jumping", true);
+        isJumping = true;
+        animator.SetBool("jump", true);
+        animator.SetBool("walk", false);
+        animator.SetBool("walkback", false);
+        animator.SetBool("sprint", false);
+        animator.SetBool("idle", false);
+        animator.SetBool("walkLeft", false);
+        animator.SetBool("walkRight", false);
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         isGrounded = false;
     }
@@ -129,7 +227,20 @@ public class PlayerController : MonoBehaviour
             if (contact.normal.y > 0.7f)
             {
                 isGrounded = true;
-                animator.SetBool("jumping", false);
+                isJumping = false;
+                animator.SetBool("jump", false);
+                
+                if (!isAttacking)
+                {
+                    if (isWalking)
+                    {
+                        ActivateAnimation("walk");
+                    }
+                    else
+                    {
+                        ActivateAnimation("idle");
+                    }
+                }
                 break;
             }
         }

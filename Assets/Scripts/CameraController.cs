@@ -8,6 +8,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float distanceFromTarget = 3.0f;
     [SerializeField] private float smoothTime = 0.2f;
     [SerializeField] private float verticalOffset = 1.5f;
+    [SerializeField] private float rotationXLimit = 40f;
 
     private float rotationY;
     private float rotationX;
@@ -26,7 +27,7 @@ public class CameraController : MonoBehaviour
         rotationY += mouseX;
         rotationX -= mouseY;
 
-        rotationX = Mathf.Clamp(rotationX, -40, 40);
+        rotationX = Mathf.Clamp(rotationX, -rotationXLimit, rotationXLimit);
 
         Vector3 nextRotation = new Vector3(rotationX, rotationY);
         currentRotation = Vector3.SmoothDamp(currentRotation, nextRotation,ref smoothVelocity, smoothTime);
