@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,10 +12,12 @@ public class PlayerController : MonoBehaviour
     private bool isWalking = false;
     private bool isJumping = true;
     private bool isAttacking = false;
+    private bool isJumpAttacking = false;
     private float moveSpeed;
     private bool isGrounded;
     private Animator animator;
     private Rigidbody rb;
+    private List<string> booleanAnimatorParameterNames;
 
     public GameObject fireSpell;
     public GameObject iceSpell;
@@ -30,11 +33,12 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("walkRight", false);
         animator.SetBool("walkLeft", false);
         animator.SetBool("idle", true);
+        booleanAnimatorParameterNames = GetBooleanParameterNames();
     }
 
     void Update()
     {
-        if (!isAttacking)
+        if (!isAttacking || isJumpAttacking)
         {
             if (Input.GetKey(KeyCode.A))
             {
@@ -69,11 +73,17 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
                     moveSpeed = runSpeed;
-                    if (!isJumping) ActivateAnimation("sprint");
+                    if (!isJumping)
+                    {
+                        ActivateAnimation("sprint");
+                    }
                 }
                 else
                 {
-                    if (!isJumping) ActivateAnimation("walk");
+                    if (!isJumping)
+                    {
+                        ActivateAnimation("walk");
+                    }
                 }
 
                 Vector3 moveDirection = transform.forward * moveSpeed;
@@ -123,10 +133,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private List<string> GetBooleanParameterNames()
+    {
+        List<string> booleanParameterNames = new List<string>();
+        foreach (var parameter in animator.parameters)
+        {
+            if (parameter.type == AnimatorControllerParameterType.Bool)
+            {
+                booleanParameterNames.Add(parameter.name);
+            }
+        }
+        return booleanParameterNames;
+    }
+
     private void ActivateAnimation(string animationToActive)
     {
-        string[] animations = new string[] {"sprint", "jump", "attack", "walk", "walkback", "idle", "walkRight", "walkLeft"};
-        foreach (string animation in animations)
+        foreach (string animation in booleanAnimatorParameterNames)
         {
             if (animation != animationToActive)
             {
@@ -134,7 +156,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                animator.SetBool(animationToActive, true);
+                animator.SetBool(animation, true);
             }
         }
     }
@@ -155,7 +177,6 @@ public class PlayerController : MonoBehaviour
 
         spellRb.useGravity = false;
         spellRb.constraints = RigidbodyConstraints.FreezeRotation;
-
         spellRb.velocity = transform.forward * spellSpeed;
 
         StartCoroutine(DestroySpellAfterDistance(spellInstance, spellRb));
@@ -168,33 +189,27 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("attack", false);
         isAttacking = false;
 
-        if (!isJumping)
+        if (isWalking)
         {
-            if (isWalking)
-            {
-                ActivateAnimation("walk");
-            }
-            else
-            {
-                ActivateAnimation("idle");
-            }
+            ActivateAnimation("walk");
+        }
+        else
+        {
+            ActivateAnimation("idle");
         }
     }
 
     private IEnumerator DestroySpellAfterDistance(GameObject spellObj, Rigidbody spellRb)
     {
         Vector3 startPosition = spellObj.transform.position;
-
         while (spellObj != null)
         {
             float distanceTraveled = Vector3.Distance(startPosition, spellObj.transform.position);
-
             if (distanceTraveled >= maxSpellDistance)
             {
                 Destroy(spellObj);
                 yield break;
             }
-
             yield return null;
         }
     }
@@ -216,7 +231,7 @@ public class PlayerController : MonoBehaviour
                 isGrounded = true;
                 isJumping = false;
                 animator.SetBool("jump", false);
-                
+
                 if (!isAttacking)
                 {
                     if (isWalking)
