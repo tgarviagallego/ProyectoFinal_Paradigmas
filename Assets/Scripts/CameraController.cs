@@ -1,30 +1,49 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class CameraController : MonoBehaviour
 {
-    public GameObject player;
-    public Vector3 offset = new Vector3(0, 5, 10);
+    [SerializeField] private float mouseSensitivity = 3.0f;
+    [SerializeField] private Transform target;
+    [SerializeField] private float distanceFromTarget = 3.0f;
+    [SerializeField] private float smoothTime = 0.2f;
+    [SerializeField] private float verticalOffset = 1.5f;
+    [SerializeField] private float rotationXLimit = 40f;
+    [SerializeField] private float zoomSpeed = 2.0f; 
+    [SerializeField] private float minZoomDistance = 1.0f; 
+    [SerializeField] private float maxZoomDistance = 10.0f; 
 
-    // Start is called before the first frame update
+    private float rotationY;
+    private float rotationX;
+    private Vector3 currentRotation;
+    private Vector3 smoothVelocity = Vector3.zero;
+
     void Start()
     {
-
+        Cursor.lockState = CursorLockMode.Locked;    
     }
-
-    // Update is called once per frame
     void Update()
     {
-        if (player != null)
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+
+        rotationY += mouseX;
+        rotationX -= mouseY;
+
+        rotationX = Mathf.Clamp(rotationX, -rotationXLimit, rotationXLimit);
+
+        Vector3 nextRotation = new Vector3(rotationX, rotationY);
+        currentRotation = Vector3.SmoothDamp(currentRotation, nextRotation,ref smoothVelocity, smoothTime);
+
+        transform.localEulerAngles = new Vector3(rotationX, rotationY, 0);
+
+        transform.position = target.position - transform.forward * distanceFromTarget + transform.up * verticalOffset;
+
+        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+        if (scrollInput != 0)
         {
-            Vector3 desiredPosition = player.transform.position + offset;
-
-            Quaternion rotation = Quaternion.Euler(0.0f, player.transform.rotation.eulerAngles.y, 0.0f);
-
-            transform.position = player.transform.position - rotation*offset;
-
-            transform.LookAt(player.transform);
+            distanceFromTarget -= scrollInput * zoomSpeed;
+            distanceFromTarget = Mathf.Clamp(distanceFromTarget, minZoomDistance, maxZoomDistance);
         }
     }
 }
