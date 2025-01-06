@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
     private bool isWalking = false;
     private bool isJumping = true;
     private bool isAttacking = false;
-    private float oldWalkSpeed;
     private float moveSpeed;
     private bool isGrounded;
     private Animator animator;
@@ -28,7 +27,6 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         isGrounded = true;
-        oldWalkSpeed = walkSpeed;
         animator.SetBool("walkRight", false);
         animator.SetBool("walkLeft", false);
         animator.SetBool("idle", true);
@@ -125,18 +123,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void ActivateAnimation(string animation)
+    private void ActivateAnimation(string animationToActive)
     {
-        string[] animationsBools = new string[] { "idle", "walk", "walkback", "walkRight", "walkLeft", "sprint", "jump" };
-        foreach (string animationBool in animationsBools)
+        string[] animations = new string[] {"sprint", "jump", "attack", "walk", "walkback", "idle", "walkRight", "walkLeft"};
+        foreach (string animation in animations)
         {
-            if (animationBool != animation)
+            if (animation != animationToActive)
             {
-                animator.SetBool(animationBool, false);
+                animator.SetBool(animation, false);
             }
             else
             {
-                animator.SetBool(animation, true);
+                animator.SetBool(animationToActive, true);
             }
         }
     }
@@ -144,12 +142,7 @@ public class PlayerController : MonoBehaviour
     private void ThrowSpell(GameObject spell)
     {
         isAttacking = true;
-        animator.SetBool("attack", true);
-        animator.SetBool("walk", false);
-        animator.SetBool("walkback", false);
-        animator.SetBool("sprint", false);
-        animator.SetBool("walkLeft", false);
-        animator.SetBool("walkRight", false);
+        ActivateAnimation("attack");
 
         Vector3 spawnPosition = transform.position + transform.forward * 1.5f + Vector3.up;
         GameObject spellInstance = Instantiate(spell, spawnPosition, transform.rotation);
@@ -209,13 +202,7 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
         isJumping = true;
-        animator.SetBool("jump", true);
-        animator.SetBool("walk", false);
-        animator.SetBool("walkback", false);
-        animator.SetBool("sprint", false);
-        animator.SetBool("idle", false);
-        animator.SetBool("walkLeft", false);
-        animator.SetBool("walkRight", false);
+        ActivateAnimation("jump");
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         isGrounded = false;
     }

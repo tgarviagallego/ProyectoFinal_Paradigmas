@@ -9,6 +9,9 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float smoothTime = 0.2f;
     [SerializeField] private float verticalOffset = 1.5f;
     [SerializeField] private float rotationXLimit = 40f;
+    [SerializeField] private float zoomSpeed = 2.0f; 
+    [SerializeField] private float minZoomDistance = 1.0f; 
+    [SerializeField] private float maxZoomDistance = 10.0f; 
 
     private float rotationY;
     private float rotationX;
@@ -34,6 +37,13 @@ public class CameraController : MonoBehaviour
 
         transform.localEulerAngles = new Vector3(rotationX, rotationY, 0);
 
-        transform.position = target.position-transform.forward*distanceFromTarget+transform.up*verticalOffset;
+        transform.position = target.position - transform.forward * distanceFromTarget + transform.up * verticalOffset;
+
+        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+        if (scrollInput != 0)
+        {
+            distanceFromTarget -= scrollInput * zoomSpeed;
+            distanceFromTarget = Mathf.Clamp(distanceFromTarget, minZoomDistance, maxZoomDistance);
+        }
     }
 }
