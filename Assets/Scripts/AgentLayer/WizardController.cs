@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour
     public float spellSpeed = 10f;
     public float maxSpellDistance = 20f;
 
+
+    // Nueva bandera para habilitar/deshabilitar la entrada
+    public bool allowInput = true;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -38,6 +41,13 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        // Si la entrada está deshabilitada, no hacer nada
+        if (!allowInput)
+        {
+            rb.velocity = new Vector3(0, rb.velocity.y, 0); // Detener el movimiento
+            return;
+        }
+
         if (!isAttacking || isJumpAttacking)
         {
             if (Input.GetKey(KeyCode.A))
