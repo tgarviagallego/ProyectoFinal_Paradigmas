@@ -30,7 +30,7 @@ public class DwarfChaseState : StateMachineBehaviour
         animator.transform.LookAt(player);
 
         float distanceFromPlayer = Vector3.Distance(player.position, animator.transform.position);
-        //Debug.Log("Distance from Player (ChaseState): " + distanceFromPlayer);
+        Debug.Log("Distance from Player (ChaseState): " + distanceFromPlayer);
 
         // check if has to stop
         if (distanceFromPlayer > stopChasingDistance)
