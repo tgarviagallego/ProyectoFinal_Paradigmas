@@ -30,6 +30,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void UpdateGameState(GameState newState)
+    {
+        currentState = newState;
+        switch (newState)
+        {
+            case GameState.MainMenu:
+                break;
+            case GameState.Playing:
+                break;
+            case GameState.Paused:
+                break;
+            case GameState.Victory:
+                break;
+            case GameState.GameOver:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+        }
+
+    }
     private void InitializeGame()
     {
         DataManager.Instance.LoadMainMenu();
