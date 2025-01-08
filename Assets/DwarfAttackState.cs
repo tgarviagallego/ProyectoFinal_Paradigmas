@@ -28,7 +28,7 @@ public class DwarfAttackState : StateMachineBehaviour
         float distanceFromPlayer = Vector3.Distance(player.position, animator.transform.position);
         if (distanceFromPlayer < stopAttackingDistance)
         {
-            animator.SetBool("isAttacking", false);
+            animator.SetBool("IsAttacking", false);
         }
     }
 

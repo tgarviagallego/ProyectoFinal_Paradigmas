@@ -15,7 +15,7 @@ public class DwarfWalkState : StateMachineBehaviour
     NavMeshAgent agent; // the ai we are going to use
 
     public float detectionAreaRadius = 18f;
-    public float walkSpeed = 2f;
+    public float walkSpeed = 4f;
 
     List<Transform> waypointsList = new List<Transform>();// positions around the bear to know where to go
 
@@ -56,7 +56,7 @@ public class DwarfWalkState : StateMachineBehaviour
         timer += Time.deltaTime;
         if (timer > walkingTime) 
         {
-            animator.SetBool("isWalking", false);
+            animator.SetBool("IsWalking", false);
 
         }
 

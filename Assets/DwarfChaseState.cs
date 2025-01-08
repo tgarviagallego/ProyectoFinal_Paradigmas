@@ -8,7 +8,7 @@ public class DwarfChaseState : StateMachineBehaviour
     NavMeshAgent agent;
     Transform player;
 
-    public float chaseSpeed = 6f;
+    public float chaseSpeed = 14f;
     public float stopChasingDistance = 21; // a bit bigger than the detection area to keep detecting
     public float attackingDistance = 2.5f;
 
@@ -35,13 +35,13 @@ public class DwarfChaseState : StateMachineBehaviour
         // check if has to stop
         if (distanceFromPlayer > stopChasingDistance)
         {
-            animator.SetBool("isChasing", false);
+            animator.SetBool("IsChasing", false);
         }
 
         //check if the agent should attack
         if (distanceFromPlayer < attackingDistance)
         {
-            animator.SetBool("isAttacking", true);
+            animator.SetBool("IsAttacking", true);
         }
 
     }

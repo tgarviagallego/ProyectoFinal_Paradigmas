@@ -26,14 +26,14 @@ public class DwarfIdleState : StateMachineBehaviour
         if ( timer > idleTime)
         {
             //Debug.Log("Idle Time Expired: Switching to Walk State");
-            animator.SetBool("isWalking",true);
+            animator.SetBool("IsWalking",true);
         }
 
         float distanceFromPlayer = Vector3.Distance(player.position, animator.transform.position);
         if (distanceFromPlayer < detectionAreaRadius)
         {
             //Debug.Log("Distance from Player: " + distanceFromPlayer);
-            animator.SetBool("isChasing", true);
+            animator.SetBool("IsChasing", true);
         }
     }
 
