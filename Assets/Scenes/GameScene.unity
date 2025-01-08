@@ -21539,7 +21539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dab256a26f9b69d4c932042cc304fa48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthCounter: {fileID: 0}
+  healthCounter: {fileID: 1795562474}
   playerState: {fileID: 1956406675}
 --- !u!1001 &2122094865
 PrefabInstance:
