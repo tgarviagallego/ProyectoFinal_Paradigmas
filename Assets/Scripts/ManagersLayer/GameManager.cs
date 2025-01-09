@@ -1,23 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Rendering;
 using SpellboundForest.Enums;
+using System.Collections.Generic;
 using System;
 using UnityEngine.SceneManagement;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
-    
     public static GameManager Instance => _instance;
 
-    [SerializeField] private float gameTime = 0f;
-    [SerializeField] private bool isMultiplayer = false;
-    [SerializeField] private GameState currentState;
-    [SerializeField] private MenuManager menuManager;
-
+    private float gameTime;
+    private bool isMultiplayer;
+    private Dictionary<GameState, IGameState> states;
+    private IGameState currentState;
     private string gameSceneName = "GameScene";
+    private string mainMenuSceneName = "MainMenu";
 
     public static event Action<GameState> OnGameStateChanged;
     public float GameTime => gameTime;
@@ -37,121 +34,80 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        UpdateGameState(GameState.MainMenu);
+        // Inicializar estados con el MainMenuManager
+        InitializeStatesForMainMenu();
     }
 
+    private void InitializeStatesForMainMenu()
+    {
+        states = new Dictionary<GameState, IGameState>
+        {
+            { GameState.MainMenu, new MainMenuState(this, MainMenuManager.Instance) }
+        };
+        SetState(GameState.MainMenu);
+    }
+
+    private void InitializeStatesForGameScene()
+    {
+        GameMenuManager gameMenuManager = GameMenuManager.Instance;
+        states = new Dictionary<GameState, IGameState>
+        {
+            { GameState.MainMenu, new MainMenuState(this, MainMenuManager.Instance)},
+            { GameState.Playing, new PlayingState(this, gameMenuManager) },
+            { GameState.Paused, new PausedState(this, gameMenuManager) },
+            { GameState.Victory, new VictoryState(this, gameMenuManager) },
+            { GameState.GameOver, new GameOverState(this, gameMenuManager) }
+        };
+    }
 
     private void OnEnable()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;  // Suscribirse al evento de carga de escena
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;  // Desuscribirse al evento
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == gameSceneName)
         {
-            // Inicializar la escena del juego
-            UpdateGameState(GameState.Playing);
-            menuManager = FindObjectOfType<MenuManager>();
+            InitializeStatesForGameScene();
+            SetState(GameState.Playing);
         }
-    }
-    public void UpdateGameState(GameState newState)
-    {
-        currentState = newState;
-        switch (newState)
+        else if (scene.name == mainMenuSceneName)
         {
-            case GameState.MainMenu:
-                HandleMainMenuState();
-                break;
-            case GameState.Playing:
-                HandlePlayingState();
-                break;
-            case GameState.Paused:
-                HandlePausedState();
-                break;
-            case GameState.Victory:
-                HandleVictoryState();
-                break;
-            case GameState.GameOver:
-                HandleGameOverState();
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+            InitializeStatesForMainMenu();
         }
-        OnGameStateChanged?.Invoke(newState);
-    }
-
-    private void HandleGameOverState()
-    {
-        throw new NotImplementedException();
-    }
-
-    private void HandleVictoryState()
-    {
-        throw new NotImplementedException();
-    }
-
-    private void HandlePausedState()
-    {
-        menuManager.ShowPauseMenu();
-        menuManager.EnableMenuControls();
-    }
-
-    private void HandlePlayingState()
-    {
-        if (menuManager != null)
-        {
-            menuManager.HideAllMenus();
-            menuManager.EnableGameplayControls();
-        }
-    }
-
-    private void HandleMainMenuState()
-    {
-        return;
-        //if (menuManager != null)
-        //{
-        //    menuManager.ShowMainMenu();
-        //    menuManager.EnableMenuControls();
-        //}
     }
 
     private void Update()
     {
-        if (currentState == GameState.Playing)
-        {
-            gameTime += Time.deltaTime;
-            CheckWinConditions();
-        }
-
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            if (currentState == GameState.Playing)
-            {
-                UpdateGameState(GameState.Paused);
-            }
-            else if (currentState == GameState.Paused)
-            {
-                UpdateGameState(GameState.Playing);
-            }
-        }
+        currentState?.Update();
     }
 
-    private void CheckWinConditions()
+    public void SetState(GameState newState)
     {
-        // throw new NotImplementedException();
+        if (states.TryGetValue(newState, out IGameState state))
+        {
+            currentState?.Exit();
+            currentState = state;
+            currentState.Enter();
+            OnGameStateChanged?.Invoke(newState);
+        }
     }
 
     public void StartGame()
     {
         gameTime = 0f;
-
         LoadGameScene();
+    }
+
+    public void UpdateGameTime(float time)
+    {
+        gameTime = time;
     }
 
     private void LoadGameScene()
@@ -161,7 +117,6 @@ public class GameManager : MonoBehaviour
 
     public void GameOver(bool victory)
     {
-        UpdateGameState(victory ? GameState.Victory : GameState.GameOver);
-        DataManager.Instance.SaveHighScore(gameTime);
+        SetState(victory ? GameState.Victory : GameState.GameOver);
     }
 }
