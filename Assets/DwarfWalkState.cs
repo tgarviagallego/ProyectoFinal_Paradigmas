@@ -64,7 +64,7 @@ public class DwarfWalkState : StateMachineBehaviour
         float distanceFromPlayer = Vector3.Distance(player.position, animator.transform.position);
         if (distanceFromPlayer < detectionAreaRadius)
         {
-            animator.SetBool("isChasing", true);
+            animator.SetBool("IsChasing", true);
         }
 
     }

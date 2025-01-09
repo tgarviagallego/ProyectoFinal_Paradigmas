@@ -4625,7 +4625,6 @@ MonoBehaviour:
   cameraController: {fileID: 1372618693}
   playerController: {fileID: 564244136}
   menuCanvas: {fileID: 1511806984}
-  isMenuOpen: 0
   settingsMenu: {fileID: 300329355}
   menu: {fileID: 1125056060}
 --- !u!4 &558999769
@@ -14476,7 +14475,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1477810533}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 0
   m_Extents: {x: 0.5, y: 1, z: 0.5}

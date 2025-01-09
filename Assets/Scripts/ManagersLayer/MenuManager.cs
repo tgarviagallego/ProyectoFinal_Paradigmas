@@ -1,61 +1,64 @@
+using SpellboundForest.Enums;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance { get; set; }
 
-    public MonoBehaviour cameraController; // Asigna el script de la cámara desde el editor
-    public PlayerController playerController;
+    [SerializeField] private MonoBehaviour cameraController; // Asigna el script de la cámara desde el editor
+    [SerializeField] private PlayerController playerController;
 
-    public GameObject menuCanvas;
+    [SerializeField] private GameObject menuCanvas;
     //public GameObject uiCanvas; // no se si esto se necesita
-    public bool isMenuOpen;
 
-    public GameObject settingsMenu;
-    public GameObject menu;
+    [SerializeField] private GameObject settingsMenu;
+    [SerializeField] private GameObject menu;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
-        else 
-        {
-            Instance = this;
-        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(menuCanvas);
     }
-    private void Update()
+
+    public void ShowPauseMenu()
     {
-        if (Input.GetKeyDown(KeyCode.M) && !isMenuOpen)
-        {
-            //uiCanvas.SetActive(false);
-            menuCanvas.SetActive(true);
+        HideAllMenus();
+        menuCanvas.SetActive(true);
+        menu.SetActive(true);
+    }
 
-            isMenuOpen = true;
-            
-            Cursor.lockState = CursorLockMode.None; // para permitir seleccionar con el ratón
-            Cursor.visible = true;
-            cameraController.enabled = false;
-            playerController.allowInput = false; // Desactivar el control del jugador
+    public void HideAllMenus()
+    {
+        menuCanvas.SetActive(false);
+        menu.SetActive(false);
+        settingsMenu.SetActive(false);
+    }
 
-        }
-        else if (Input.GetKeyDown(KeyCode.M) && isMenuOpen) 
-        {
-            settingsMenu.SetActive(false);
-            menu.SetActive(true);
+    public void EnableMenuControls()
+    {
+        Cursor.lockState = CursorLockMode.None; // para permitir seleccionar con el ratón
+        Cursor.visible = true;
+        if (cameraController != null) cameraController.enabled = false;
+        if (playerController != null) playerController.allowInput = false; // Desactivar el control del jugador
+    }
 
-            //uiCanvas.SetActive(true);
-            menuCanvas.SetActive(false);
-
-            isMenuOpen = false;
-
-            Cursor.lockState = CursorLockMode.Locked; 
-            Cursor.visible = false;
-            cameraController.enabled = true;
-            playerController.allowInput = true; // Desactivar el control del jugador
-        }
+    public void EnableGameplayControls()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        if (cameraController != null) cameraController.enabled = true;
+        if (playerController != null) playerController.allowInput = true; // Desactivar el control del jugador
     }
 }

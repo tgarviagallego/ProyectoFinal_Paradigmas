@@ -2726,7 +2726,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4161788898430874}
   - component: {fileID: 95244105348094984}
-  - component: {fileID: 8988102031589002247}
   m_Layer: 0
   m_Name: Dwarf BerserkerM
   m_TagString: Untagged
@@ -2773,18 +2772,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8988102031589002247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1615335249088072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f1361307c217eb44a4ca8ea0d6903d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1622815368568900
 GameObject:
   m_ObjectHideFlags: 0

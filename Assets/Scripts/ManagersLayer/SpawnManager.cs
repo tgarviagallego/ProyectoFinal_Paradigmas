@@ -32,7 +32,7 @@ public class SpawnManager : MonoBehaviour
 
     internal void InitializeSpawnPoints()
     {
-        throw new NotImplementedException();
+        // throw new NotImplementedException();
     }
 
     internal void SpawnMultiplayerWizards()

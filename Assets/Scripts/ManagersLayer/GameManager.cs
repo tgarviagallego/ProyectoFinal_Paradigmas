@@ -4,17 +4,22 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using SpellboundForest.Enums;
 using System;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
+    
     public static GameManager Instance => _instance;
 
     [SerializeField] private float gameTime = 0f;
     [SerializeField] private bool isMultiplayer = false;
     [SerializeField] private GameState currentState;
+    [SerializeField] private MenuManager menuManager;
 
-    public event System.Action<GameState> OnGameStateChanged;
+    private string gameSceneName = "GameScene";
+
+    public static event Action<GameState> OnGameStateChanged;
     public float GameTime => gameTime;
 
     private void Awake()
@@ -30,37 +35,90 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        UpdateGameState(GameState.MainMenu);
+    }
+
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;  // Suscribirse al evento de carga de escena
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;  // Desuscribirse al evento
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == gameSceneName)
+        {
+            // Inicializar la escena del juego
+            UpdateGameState(GameState.Playing);
+            menuManager = FindObjectOfType<MenuManager>();
+        }
+    }
     public void UpdateGameState(GameState newState)
     {
         currentState = newState;
         switch (newState)
         {
             case GameState.MainMenu:
+                HandleMainMenuState();
                 break;
             case GameState.Playing:
+                HandlePlayingState();
                 break;
             case GameState.Paused:
+                HandlePausedState();
                 break;
             case GameState.Victory:
+                HandleVictoryState();
                 break;
             case GameState.GameOver:
+                HandleGameOverState();
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
-
-    }
-    private void InitializeGame()
-    {
-        DataManager.Instance.LoadMainMenu();
-        SpawnManager.Instance.InitializeSpawnPoints();
-        SetGameState(GameState.MainMenu);
+        OnGameStateChanged?.Invoke(newState);
     }
 
-    private void SetGameState(GameState newState)
+    private void HandleGameOverState()
     {
-        currentState = newState;
-        OnGameStateChanged?.Invoke(currentState);
+        throw new NotImplementedException();
+    }
+
+    private void HandleVictoryState()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void HandlePausedState()
+    {
+        menuManager.ShowPauseMenu();
+        menuManager.EnableMenuControls();
+    }
+
+    private void HandlePlayingState()
+    {
+        if (menuManager != null)
+        {
+            menuManager.HideAllMenus();
+            menuManager.EnableGameplayControls();
+        }
+    }
+
+    private void HandleMainMenuState()
+    {
+        return;
+        //if (menuManager != null)
+        //{
+        //    menuManager.ShowMainMenu();
+        //    menuManager.EnableMenuControls();
+        //}
     }
 
     private void Update()
@@ -70,35 +128,40 @@ public class GameManager : MonoBehaviour
             gameTime += Time.deltaTime;
             CheckWinConditions();
         }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            if (currentState == GameState.Playing)
+            {
+                UpdateGameState(GameState.Paused);
+            }
+            else if (currentState == GameState.Paused)
+            {
+                UpdateGameState(GameState.Playing);
+            }
+        }
     }
 
     private void CheckWinConditions()
     {
-        throw new NotImplementedException();
+        // throw new NotImplementedException();
     }
 
-    public void StartGame(bool multiplayer)
+    public void StartGame()
     {
-        isMultiplayer = multiplayer;
         gameTime = 0f;
 
-        SpawnManager.Instance.InitializeSpawnPoints(); // cambiar por inicializar general
+        LoadGameScene();
+    }
 
-        if (isMultiplayer)
-        {
-            SpawnManager.Instance.SpawnMultiplayerWizards();
-        }
-        else
-        {
-            SpawnManager.Instance.SpawnSinglePlayerWizard();
-        }
-
-        SetGameState(GameState.Playing);
+    private void LoadGameScene()
+    {
+        SceneManager.LoadScene(gameSceneName);
     }
 
     public void GameOver(bool victory)
     {
-        SetGameState(victory ? GameState.Victory : GameState.GameOver);
+        UpdateGameState(victory ? GameState.Victory : GameState.GameOver);
         DataManager.Instance.SaveHighScore(gameTime);
     }
 }
