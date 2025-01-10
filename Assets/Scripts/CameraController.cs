@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -17,6 +18,11 @@ public class CameraController : MonoBehaviour
     private float rotationX;
     private Vector3 currentRotation;
     private Vector3 smoothVelocity = Vector3.zero;
+
+    internal void SetTarget(GameObject newTarget)
+    {
+        target = newTarget.transform;
+    }
 
     void Start()
     {

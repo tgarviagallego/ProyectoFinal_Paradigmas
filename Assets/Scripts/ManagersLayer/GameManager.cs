@@ -6,15 +6,19 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    
     private static GameManager _instance;
     public static GameManager Instance => _instance;
 
     private float gameTime;
-    private bool isMultiplayer;
+    private bool isMultiplayer = false;
     private Dictionary<GameState, IGameState> states;
     private IGameState currentState;
     private string gameSceneName = "GameScene";
     private string mainMenuSceneName = "MainMenu";
+    private SpawnManager spawnManager = SpawnManager.Instance;
+    private Camera mainCamera;
+    public Camera MainCamera => mainCamera;
 
     public static event Action<GameState> OnGameStateChanged;
     public float GameTime => gameTime;
@@ -75,12 +79,25 @@ public class GameManager : MonoBehaviour
         if (scene.name == gameSceneName)
         {
             InitializeStatesForGameScene();
+            InitializeGameScene();
             SetState(GameState.Playing);
+            if (!isMultiplayer)
+            {
+                mainCamera = Camera.main;
+                CameraController cameraController = mainCamera.GetComponent<CameraController>();
+                cameraController.SetTarget(spawnManager.Wizards[0]);
+            }
+
         }
         else if (scene.name == mainMenuSceneName)
         {
             InitializeStatesForMainMenu();
         }
+    }
+
+    private void InitializeGameScene()
+    {
+        spawnManager.SpawnWizard(isMultiplayer);
     }
 
     private void Update()
@@ -103,6 +120,7 @@ public class GameManager : MonoBehaviour
     {
         gameTime = 0f;
         LoadGameScene();
+        spawnManager.SpawnWizard(isMultiplayer);
     }
 
     public void UpdateGameTime(float time)
