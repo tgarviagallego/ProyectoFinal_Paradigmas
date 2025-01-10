@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class DwarfChaseState : StateMachineBehaviour
+public class CreatureChaseState : StateMachineBehaviour
 {
     NavMeshAgent agent;
     Transform player;

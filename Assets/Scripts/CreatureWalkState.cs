@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.AI;
 using UnityEditor.Experimental.GraphView;
 
-public class DwarfWalkState : StateMachineBehaviour
+public class CreatureWalkState : StateMachineBehaviour
 {
     float timer;
     public float walkingTime = 10f; //how much animal is still
@@ -64,7 +64,7 @@ public class DwarfWalkState : StateMachineBehaviour
         float distanceFromPlayer = Vector3.Distance(player.position, animator.transform.position);
         if (distanceFromPlayer < detectionAreaRadius)
         {
-            animator.SetBool("isChasing", true);
+            animator.SetBool("IsChasing", true);
         }
 
     }

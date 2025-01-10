@@ -78814,6 +78814,7 @@ GameObject:
   - component: {fileID: 1920325297268671249}
   - component: {fileID: 1920325297268671342}
   - component: {fileID: 6775163740762971241}
+  - component: {fileID: 861012044783467323}
   m_Layer: 0
   m_Name: Ef_IceMagicGlowFree01
   m_TagString: Untagged
@@ -83902,3 +83903,24 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!135 &861012044783467323
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920325297268671343}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2.3231578
+  m_Center: {x: 0.06668162, y: -0.8749924, z: -0.1322627}
