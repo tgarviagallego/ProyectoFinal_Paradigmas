@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class Spell : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int damage = 20; // Daño que causa el hechizo.
 
-    // Update is called once per frame
-    void Update()
+    void OnTriggerEnter(Collider other)
     {
-        
+        // Verificar si el objeto colisionado tiene el script de salud.
+        EnemyHealth enemyHealth = other.GetComponent<EnemyHealth>();
+
+        if (enemyHealth != null)
+        {
+            // Aplicar daño al enemigo.
+            enemyHealth.TakeDamage(damage);
+
+            // Opcional: destruir el hechizo tras impactar.
+            Destroy(gameObject);
+        }
     }
 }
+

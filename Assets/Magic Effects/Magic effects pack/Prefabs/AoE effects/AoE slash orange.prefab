@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1175461662703702469}
   - component: {fileID: 2901665419787407899}
   - component: {fileID: 9212833412386566060}
+  - component: {fileID: 986506247447437230}
   m_Layer: 0
   m_Name: AoE slash orange
   m_TagString: Untagged
@@ -4893,6 +4894,27 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!135 &986506247447437230
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689667626583958020}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.8666989
+  m_Center: {x: -0.1438204, y: 0, z: 0}
 --- !u!1 &1883585034484120993
 GameObject:
   m_ObjectHideFlags: 0
