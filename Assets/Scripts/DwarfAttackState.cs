@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class CreatureAttackState : StateMachineBehaviour
+public class DwarfAttackState : StateMachineBehaviour
 {
     NavMeshAgent agent;
     Transform player;

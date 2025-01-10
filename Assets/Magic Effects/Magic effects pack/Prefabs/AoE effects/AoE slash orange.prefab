@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2901665419787407899}
   - component: {fileID: 9212833412386566060}
   - component: {fileID: 986506247447437230}
+  - component: {fileID: -1765948465145236838}
   m_Layer: 0
   m_Name: AoE slash orange
   m_TagString: Untagged
@@ -4915,6 +4916,19 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.8666989
   m_Center: {x: -0.1438204, y: 0, z: 0}
+--- !u!114 &-1765948465145236838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689667626583958020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7df0a8c491f9af4b884ade7a55295d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 20
 --- !u!1 &1883585034484120993
 GameObject:
   m_ObjectHideFlags: 0

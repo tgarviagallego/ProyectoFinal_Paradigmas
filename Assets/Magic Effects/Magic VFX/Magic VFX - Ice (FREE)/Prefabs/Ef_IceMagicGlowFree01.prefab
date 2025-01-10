@@ -78815,6 +78815,7 @@ GameObject:
   - component: {fileID: 1920325297268671342}
   - component: {fileID: 6775163740762971241}
   - component: {fileID: 861012044783467323}
+  - component: {fileID: 6964470250487571576}
   m_Layer: 0
   m_Name: Ef_IceMagicGlowFree01
   m_TagString: Untagged
@@ -83924,3 +83925,16 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2.3231578
   m_Center: {x: 0.06668162, y: -0.8749924, z: -0.1322627}
+--- !u!114 &6964470250487571576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920325297268671343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7df0a8c491f9af4b884ade7a55295d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CreatureIdleState : StateMachineBehaviour
+public class DwarfIdleState : StateMachineBehaviour
 {
     float timer;
     public float idleTime = 4f; //how much animal is still

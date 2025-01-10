@@ -4,15 +4,29 @@ using UnityEngine;
 
 public class DwarfHealth : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public int maxHealth = 100;
+    private int currentHealth;
+    private Animator animator;
+
     void Start()
     {
-        
+        currentHealth = maxHealth; // Inicializar la salud al máximo.
     }
 
-    // Update is called once per frame
-    void Update()
+    public void TakeDamage(int damage)
     {
-        
+        currentHealth -= damage;
+        Debug.Log("Vida restante del enano: " + currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            animator.SetTrigger("DIE");
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log("El enano ha muerto.");
+        Destroy(gameObject); // Eliminar al enano.
     }
 }
