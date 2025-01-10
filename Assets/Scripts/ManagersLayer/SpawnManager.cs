@@ -2,6 +2,7 @@ using SpellboundForest.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -9,9 +10,10 @@ public class SpawnManager : MonoBehaviour
     private static SpawnManager _instance;
     public static SpawnManager Instance => _instance;
 
-    private WizardFactory wizardFactory = FindObjectOfType<WizardFactory>();
-    private SpellFactory spellFactory = FindObjectOfType<SpellFactory>();
-    private MonsterFactory monsterFactory = FindObjectOfType<MonsterFactory>();
+    //private WizardFactory wizardFactory = FindObjectOfType<WizardFactory>();
+    //private SpellFactory spellFactory = FindObjectOfType<SpellFactory>();
+    //private MonsterFactory monsterFactory = FindObjectOfType<MonsterFactory>();
+    private GameObject wizard;
 
     private List<Vector3> wizardSpawnPoints = new List<Vector3>();
 
@@ -21,28 +23,34 @@ public class SpawnManager : MonoBehaviour
         if (_instance == null)
         {
             _instance = this;
-            DontDestroyOnLoad(gameObject);
             InitializeWizardSpawnPoints();
+            wizard = GameObject.Find("Wizard1");
         }
         else
         {
             Destroy(gameObject);
-        } 
+        }
     }
 
-    public void SpawnMonster(MonsterType type, Vector3 position)
-    {
-        monsterFactory.CreateMonster(type, position);
-    }
+    //public void SpawnMonster(MonsterType type, Vector3 position)
+    //{
+    //    monsterFactory.CreateMonster(type, position);
+    //}
 
     public void SpawnWizard(bool isMultiplayer)
     {
         if (!isMultiplayer)
         {
-            int randomAppearancePointIndex = UnityEngine.Random.Range(0, wizardSpawnPoints.Count);
-            GameObject wizard = wizardFactory.CreateWizard(wizardSpawnPoints[randomAppearancePointIndex]);
-            wizard.tag = "Wizard";
-            Wizards.Add(wizard);
+            if (wizard != null)
+            {
+                int randomAppearancePointIndex = UnityEngine.Random.Range(0, wizardSpawnPoints.Count);
+                wizard.transform.position = wizardSpawnPoints[randomAppearancePointIndex];
+                Wizards.Add(wizard);
+            }
+            else
+            {
+                Debug.LogError("No se encontró el objeto 'Wizard1' en la escena");
+            }
         }
     }
 

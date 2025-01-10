@@ -1,8 +1,5 @@
 using SpellboundForest.Enums;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PausedState : GameStateBase
 {
@@ -15,6 +12,7 @@ public class PausedState : GameStateBase
     {
         if (GameMenuManager != null)
         {
+            Time.timeScale = 0f; // Pausa el tiempo del juego
             GameMenuManager.ShowPauseMenu();
             GameMenuManager.EnableMenuControls();
         }
@@ -22,6 +20,7 @@ public class PausedState : GameStateBase
 
     public override void Exit()
     {
+        Time.timeScale = 1f; // Restaura el tiempo del juego
         GameMenuManager?.HideAllMenus();
     }
 
@@ -29,7 +28,6 @@ public class PausedState : GameStateBase
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            Debug.Log("Intentando reanudar"); // Para debuggear
             GameManager.SetState(GameState.Playing);
         }
     }

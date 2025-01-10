@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class GameManager : MonoBehaviour
     private IGameState currentState;
     private string gameSceneName = "GameScene";
     private string mainMenuSceneName = "MainMenu";
-    private SpawnManager spawnManager = SpawnManager.Instance;
+    private SpawnManager spawnManager;
     private Camera mainCamera;
     public Camera MainCamera => mainCamera;
 
@@ -79,15 +80,8 @@ public class GameManager : MonoBehaviour
         if (scene.name == gameSceneName)
         {
             InitializeStatesForGameScene();
-            InitializeGameScene();
+            StartCoroutine(InitializeGameSceneAsync());
             SetState(GameState.Playing);
-            if (!isMultiplayer)
-            {
-                mainCamera = Camera.main;
-                CameraController cameraController = mainCamera.GetComponent<CameraController>();
-                cameraController.SetTarget(spawnManager.Wizards[0]);
-            }
-
         }
         else if (scene.name == mainMenuSceneName)
         {
@@ -95,9 +89,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private IEnumerator InitializeGameSceneAsync()
+    {
+        yield return null;
+
+        spawnManager = FindObjectOfType<SpawnManager>();
+
+        if (spawnManager == null)
+        {
+            Debug.LogError("No se pudo encontrar SpawnManager en la escena del juego!");
+            yield break;
+        }
+
+        GameObject wizard = GameObject.Find("Wizard1");
+        spawnManager.SpawnWizard(isMultiplayer);
+    }
+
     private void InitializeGameScene()
     {
-        spawnManager.SpawnWizard(isMultiplayer);
+        GameObject wizard = GameObject.Find("Wizard1");
+
+        // spawnManager.SpawnWizard(isMultiplayer);
     }
 
     private void Update()
@@ -120,7 +132,6 @@ public class GameManager : MonoBehaviour
     {
         gameTime = 0f;
         LoadGameScene();
-        spawnManager.SpawnWizard(isMultiplayer);
     }
 
     public void UpdateGameTime(float time)
@@ -130,7 +141,16 @@ public class GameManager : MonoBehaviour
 
     private void LoadGameScene()
     {
-        SceneManager.LoadScene(gameSceneName);
+        if (MainMenuManager.Instance != null)
+        {
+            MainMenuManager.Instance.HideAllMenus();
+        }
+
+        if (spawnManager != null)
+        {
+            spawnManager.Wizards.Clear();
+        }
+        SceneManager.LoadScene(gameSceneName, LoadSceneMode.Single);
     }
 
     public void GameOver(bool victory)

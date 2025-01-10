@@ -19,11 +19,6 @@ public class CameraController : MonoBehaviour
     private Vector3 currentRotation;
     private Vector3 smoothVelocity = Vector3.zero;
 
-    internal void SetTarget(GameObject newTarget)
-    {
-        target = newTarget.transform;
-    }
-
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;    
