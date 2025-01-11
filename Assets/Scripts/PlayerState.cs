@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -8,7 +9,8 @@ public class PlayerState : MonoBehaviour
 
     public static PlayerState Instance { get; set; }
     public float currentHealth; // we want to see it in the isnpector, but we can change it later..
-    public float maxHealth; 
+    public float maxHealth;
+    //public static event Action<bool> OnPlayerDeath;
 
     private void Awake()
     {
@@ -43,8 +45,9 @@ public class PlayerState : MonoBehaviour
         if (currentHealth <= 0)
         {
             Debug.Log("Player is dead");
+            Destroy(gameObject);
         }
-        //if we want to add sound
+        
     }
 
 }

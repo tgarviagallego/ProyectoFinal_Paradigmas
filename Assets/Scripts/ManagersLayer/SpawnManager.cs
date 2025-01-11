@@ -60,15 +60,15 @@ public class SpawnManager : MonoBehaviour
         wizardSpawnPoints = new List<Vector3>()
         {
             new Vector3(755.3236f, 9.474333f, 157.1007f),
-            //new Vector3(722.4654f, 19.87023f, 422.4689f),
-            //new Vector3(902.062f, 7.008363f, 295.6882f),
-            //new Vector3(530.7039f, 6.1904f, 314.0964f),
-            //new Vector3(546.5419f, 6.190442f, 369.67f),
-            //new Vector3(381.05f, 6.153819f, 340.6833f),
-            //new Vector3(293.9341f, 6.147651f, 338.002f),
-            //new Vector3(645f, 45.96777f, 541.7389f),
-            //new Vector3(624.6567f, 2.460966f, 739.4619f),
-            //new Vector3(496.1274f, 14.47593f, 628.1271f)
+            new Vector3(722.4654f, 19.87023f, 422.4689f),
+            new Vector3(902.062f, 7.008363f, 295.6882f),
+            new Vector3(530.7039f, 6.1904f, 314.0964f),
+            new Vector3(546.5419f, 6.190442f, 369.67f),
+            new Vector3(381.05f, 6.153819f, 340.6833f),
+            new Vector3(293.9341f, 6.147651f, 338.002f),
+            new Vector3(645f, 45.96777f, 541.7389f),
+            new Vector3(624.6567f, 2.460966f, 739.4619f),
+            new Vector3(496.1274f, 14.47593f, 628.1271f)
         };
     }
 
@@ -83,8 +83,8 @@ public class SpawnManager : MonoBehaviour
             new Vector3(725.7041f, 9.671993f, 136.3676f),
             new Vector3(66.69225f, 39.50972f, 128.7362f),
             new Vector3(725.7041f, 9.671993f, 136.3676f),
-            new Vector3(725.7041f, 9.671993f, 136.3676f),
             new Vector3(725.7041f, 9.671993f, 136.3676f)
+            
         };
     }
 

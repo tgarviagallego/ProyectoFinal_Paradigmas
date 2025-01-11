@@ -5,23 +5,12 @@ using UnityEngine.UI;
 
 public class DwarfState : MonoBehaviour
 {
-    public static DwarfState Instance { get; set; }
     public int maxHealth = 100;
     public int currentHealth; // Hacer público para acceso desde otros scripts.
     private Animator animator;
     public Slider healthBarSlider;
 
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
-    }
+  
 
     void Start()
     {
@@ -46,7 +35,6 @@ public class DwarfState : MonoBehaviour
             Die();
         }
     }
-
     private void Die()
     {
         animator.SetTrigger("DIE");
