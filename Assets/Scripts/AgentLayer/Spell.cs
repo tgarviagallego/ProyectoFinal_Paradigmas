@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spell : MonoBehaviour
 {
-    public int damageToInflict = 20; // Daño que causa el hechizo.
+    public int damageToInflict = 20; 
 
     void OnTriggerEnter(Collider other)
     {
@@ -13,7 +13,7 @@ public class Spell : MonoBehaviour
         {
 
             DwarfState.Instance.TakeDamage(damageToInflict);
-            Debug.Log("Auch!");
+            //Debug.Log("Auch!");
 
         }
     }

@@ -28,6 +28,7 @@ public class DwarfState : MonoBehaviour
         currentHealth = maxHealth;
         healthBarSlider.maxValue = maxHealth; // Configurar el valor máximo del slider.
         healthBarSlider.value = currentHealth; // Inicializar el slider con la salud actual.
+        animator = GetComponent<Animator>();
     }
 
     public void UpdateHealthBar()
@@ -39,7 +40,6 @@ public class DwarfState : MonoBehaviour
     {
         currentHealth -= damage;
         UpdateHealthBar(); // Llamar directamente al actualizar la vida.
-        Debug.Log("Vida restante del enano: " + currentHealth);
 
         if (currentHealth <= 0)
         {
@@ -49,8 +49,8 @@ public class DwarfState : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("El enano ha muerto.");
         animator.SetTrigger("DIE");
-        // Otras acciones al morir, si es necesario.
+        Destroy(gameObject);
+      
     }
 }
