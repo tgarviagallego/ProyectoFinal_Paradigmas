@@ -24,7 +24,17 @@ public class HealthBar : MonoBehaviour
 
     private void FixedUpdate()
     {
-        currentHealth = playerState.GetComponent<PlayerState>().currentHealth; // to be done yet
+        if (playerState == null)
+        {
+            return; 
+        }
+
+        PlayerState playerStateComponent = playerState.GetComponent<PlayerState>();
+        if (playerStateComponent == null)
+        {
+            return;
+        }
+        currentHealth = playerState.GetComponent<PlayerState>().currentHealth; 
         maxHealth = playerState.GetComponent<PlayerState>().maxHealth;
 
         float fillValue = currentHealth / maxHealth; //0-1

@@ -45,7 +45,7 @@ public class GameMenuManager : MenuManagerBase
     {
         HideAllMenus();
         menuCanvas.SetActive(true);
-        //gameOverMenu.gameObject.SetActive(true);
+        gameOverMenu.gameObject.SetActive(true);
     }
 
     public override void HideAllMenus()
