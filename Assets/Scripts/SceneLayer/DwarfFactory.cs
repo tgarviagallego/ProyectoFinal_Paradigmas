@@ -16,14 +16,10 @@ public class DwarfFactory : MonoBehaviour
         new Vector3(844f, 7.008363f, 250f),
         new Vector3(820, 56, 559),
         new Vector3(760,9.08f,180),
-        new Vector3(730,9.671993f,147f),
-        new Vector3(730,9.671993f,145f),
         new Vector3(730,9.07999992f,150),
         new Vector3(730,56,222),
-        new Vector3(726f,9.07999992f,636f),
         new Vector3(723f, 19.87023f, 421f),
         new Vector3(710f, 19.87023f, 405f),
-        new Vector3(702,56,662),
         new Vector3(700,56,237),
         new Vector3(685.23999f,9.07999992f,186.089996f),
         new Vector3(685.23999f,9.07999992f,307.899994f),
@@ -53,7 +49,7 @@ public class DwarfFactory : MonoBehaviour
         new Vector3(262,56,498f),
         new Vector3(257f,9.07999992f,402f),
         new Vector3(120f,20,540f),
-        new Vector3(75f, 39.50972f, 129f),
+        new Vector3(75f, 39.50972f, 129f)
     };
     
 

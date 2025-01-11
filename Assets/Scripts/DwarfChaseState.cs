@@ -10,7 +10,7 @@ public class DwarfChaseState : StateMachineBehaviour
 
     public float chaseSpeed = 14f;
     public float stopChasingDistance = 21; // a bit bigger than the detection area to keep detecting
-    public float attackingDistance = 2.5f;
+    public float attackingDistance = 1f;
 
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state

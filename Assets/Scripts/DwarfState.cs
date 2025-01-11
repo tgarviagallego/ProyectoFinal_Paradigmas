@@ -38,7 +38,6 @@ public class DwarfState : MonoBehaviour
     private void Die()
     {
         animator.SetTrigger("DIE");
-        Destroy(gameObject);
-      
+        Destroy(gameObject); 
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class AxeDamage : MonoBehaviour
 {
     //Transform player;
-    public int damageToInflict = 2; // Daño infligido por el hacha.
+    public int damageToInflict = 1; // Daño infligido por el hacha.
 
     private void OnTriggerEnter(Collider other)
     {

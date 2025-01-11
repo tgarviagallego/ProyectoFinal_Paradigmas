@@ -9,7 +9,7 @@ public class DwarfAttackState : StateMachineBehaviour
     NavMeshAgent agent;
     Transform player;
 
-    public float stopAttackingDistance = 2.5f;
+    public float stopAttackingDistance = 1.6f;
     public float attackRate = 1f; //attack rate is one second
     private float attackTimer;
     
@@ -38,7 +38,7 @@ public class DwarfAttackState : StateMachineBehaviour
 
         // chack if agent hast to stop the attack
         float distanceFromPlayer = Vector3.Distance(player.position, animator.transform.position);
-        if (distanceFromPlayer < stopAttackingDistance)
+        if (distanceFromPlayer > stopAttackingDistance)
         {
             animator.SetBool("IsAttacking", false);
         }
