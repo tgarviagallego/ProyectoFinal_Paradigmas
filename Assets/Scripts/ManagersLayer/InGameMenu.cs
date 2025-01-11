@@ -10,5 +10,6 @@ public class InGameMenu : MonoBehaviour
     public void BackToMainMenu()
     {
         Application.Quit();
+        Debug.Log("Saliendo del juego");
     }
 }

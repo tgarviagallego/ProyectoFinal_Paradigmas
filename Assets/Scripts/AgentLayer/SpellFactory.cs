@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class SpellFactory : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject fireSpellPrefab; 
+    
+    public GameObject CreateSpell(string spellType, Vector3 position, Quaternion rotation)
     {
-        
-    }
+        GameObject spell = null;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        switch (spellType)
+        {
+            case "Fire":
+                spell = Instantiate(fireSpellPrefab, position, rotation);
+                break;
+        }
+
+        return spell;
     }
 }

@@ -11,9 +11,9 @@ public class Spell : MonoBehaviour
 
         if (other.CompareTag("Dwarf"))
         {
-
-            DwarfState.Instance.TakeDamage(damageToInflict);
-            //Debug.Log("Auch!");
+            DwarfState dwarfState = other.GetComponent<DwarfState>();
+            dwarfState.TakeDamage(damageToInflict);
+            
 
         }
     }

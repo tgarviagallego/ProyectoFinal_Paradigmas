@@ -30,8 +30,8 @@ public class VictoryState : GameStateBase
     {
         if (Input.anyKeyDown)
         {
-            Debug.Log("Quitting game");
-            Application.Quit();
+            Time.timeScale = 1f;
+            GameManager.Instance.ReturnToMainMenu();
         }
     }
 }

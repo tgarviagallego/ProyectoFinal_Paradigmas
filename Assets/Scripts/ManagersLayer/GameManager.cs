@@ -7,12 +7,9 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    
     private static GameManager _instance;
     public static GameManager Instance => _instance;
 
-    private float gameTime;
-    private bool isMultiplayer = false;
     private Dictionary<GameState, IGameState> states;
     private IGameState currentState;
     private string gameSceneName = "GameScene";
@@ -22,7 +19,6 @@ public class GameManager : MonoBehaviour
     public Camera MainCamera => mainCamera;
 
     public static event Action<GameState> OnGameStateChanged;
-    public float GameTime => gameTime;
 
     private void Awake()
     {
@@ -39,7 +35,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // Inicializar estados con el MainMenuManager
         InitializeStatesForMainMenu();
     }
 
@@ -69,12 +64,22 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
         Treasure.OnTreasureFound += HandleTreasureFound;
+        PlayerState.OnPlayerDeath += HandlePlayerDeath;
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         Treasure.OnTreasureFound -= HandleTreasureFound;
+        PlayerState.OnPlayerDeath -= HandlePlayerDeath;
+    }
+
+    private void HandlePlayerDeath(bool isPlayerDeath)
+    {
+        if (isPlayerDeath)
+        {
+            SetState(GameState.GameOver);
+        }
     }
 
     private void HandleTreasureFound(bool found)
@@ -113,9 +118,8 @@ public class GameManager : MonoBehaviour
         }
 
         GameObject wizard = GameObject.Find("Wizard1");
-        spawnManager.SpawnWizard(isMultiplayer);
+        spawnManager.SpawnWizard();
         spawnManager.SpawnTreasure();
-        //spawnManager.SpawnDwarves();
     }
 
     private void Update()
@@ -136,14 +140,8 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        gameTime = 0f;
         LoadGameScene();
         SetState(GameState.Playing);
-    }
-
-    public void UpdateGameTime(float time)
-    {
-        gameTime = time;
     }
 
     private void LoadGameScene()
@@ -156,12 +154,25 @@ public class GameManager : MonoBehaviour
         if (spawnManager != null)
         {
             spawnManager.Wizards.Clear();
+            if (spawnManager.Treasure != null)
+            {
+                Destroy(spawnManager.Treasure);
+            }
         }
+
         SceneManager.LoadScene(gameSceneName, LoadSceneMode.Single);
     }
 
-    public void GameOver(bool victory)
+    public void ReturnToMainMenu()
     {
-        SetState(victory ? GameState.Victory : GameState.GameOver);
+        if (spawnManager != null)
+        {
+            spawnManager.Wizards.Clear();
+            if (spawnManager.Treasure != null)
+            {
+                Destroy(spawnManager.Treasure);
+            }
+        }
+        SceneManager.LoadScene(mainMenuSceneName, LoadSceneMode.Single);
     }
 }
