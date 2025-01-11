@@ -12,7 +12,7 @@ public class DwarfAttackState : StateMachineBehaviour
     public float stopAttackingDistance = 2.5f;
     public float attackRate = 1f; //attack rate is one second
     private float attackTimer;
-    public int damageToInflict = 5; //hitpoints per second
+    
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -28,7 +28,6 @@ public class DwarfAttackState : StateMachineBehaviour
 
         if (attackTimer <= 0)
         {
-            Attack();
             attackTimer = 1f / attackRate;
         }
         else
@@ -55,9 +54,4 @@ public class DwarfAttackState : StateMachineBehaviour
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-
-    private void Attack()  // if we have multiple players we have to handle who is attacked
-    {
-        //PlayerState.Instance.TakeDamage(damageToInflict);
-    }
 }

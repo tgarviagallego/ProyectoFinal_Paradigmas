@@ -5,18 +5,17 @@ using UnityEngine.AI;
 
 public class AxeDamage : MonoBehaviour
 {
-    NavMeshAgent agent;
-    Transform player;
-    public int damageToInflict = 5; // Daño infligido por el hacha.
+    //Transform player;
+    public int damageToInflict = 2; // Daño infligido por el hacha.
 
     private void OnTriggerEnter(Collider other)
     {
         
         if (other.CompareTag("Wizard")) 
         {
-            Debug.Log("paso aquí");
-            PlayerState.Instance.TakeDamage(damageToInflict);
-            Debug.Log("El jugador ha recibido daño del hacha.");
+            
+            PlayerState.Instance.TakeDamage(damageToInflict); 
+            //Debug.Log("Wizard! You are being hurt by the dwarf!.");
             
         }
     }
