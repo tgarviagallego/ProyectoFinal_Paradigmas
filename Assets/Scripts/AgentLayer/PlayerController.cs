@@ -19,9 +19,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private List<string> booleanAnimatorParameterNames;
 
-    public GameObject fireSpell;
-    public float spellSpeed = 10f;
-    public float maxSpellDistance = 20f;
+    [SerializeField] private SpellFactory spellFactory;
+    private float spellSpeed = 10f;
+    private float maxSpellDistance = 10f;
 
 
     // Nueva bandera para habilitar/deshabilitar la entrada
@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                ThrowSpell(fireSpell);
+                ThrowSpell("Fire");
             }
         }
     }
@@ -161,13 +161,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void ThrowSpell(GameObject spell)
+    private void ThrowSpell(string spellType)
     {
         isAttacking = true;
         ActivateAnimation("attack");
 
         Vector3 spawnPosition = transform.position + transform.forward * 1.5f + Vector3.up;
-        GameObject spellInstance = Instantiate(spell, spawnPosition, transform.rotation);
+        GameObject spellInstance = spellFactory.CreateSpell(spellType, spawnPosition, transform.rotation);
 
         Rigidbody spellRb = spellInstance.GetComponent<Rigidbody>();
         if (spellRb == null)
