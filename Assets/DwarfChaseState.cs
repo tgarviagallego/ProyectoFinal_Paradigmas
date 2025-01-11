@@ -25,12 +25,9 @@ public class DwarfChaseState : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         agent.SetDestination(player.position);
-        Debug.Log("Agent Destination Set To: " + player.position);
-        Debug.Log("Remaining Distance: " + agent.remainingDistance);
         animator.transform.LookAt(player);
 
         float distanceFromPlayer = Vector3.Distance(player.position, animator.transform.position);
-        Debug.Log("Distance from Player (ChaseState): " + distanceFromPlayer);
 
         // check if has to stop
         if (distanceFromPlayer > stopChasingDistance)
