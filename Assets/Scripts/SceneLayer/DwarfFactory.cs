@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public class DwarfFactory : MonoBehaviour
 {
-    public GameObject dwarfPrefab; // Prefab del enano.
+    public GameObject dwarfPrefab;
     public float navMeshCheckRadius = 2f;
 
     private List<Vector3> spawnPositions = new List<Vector3>()

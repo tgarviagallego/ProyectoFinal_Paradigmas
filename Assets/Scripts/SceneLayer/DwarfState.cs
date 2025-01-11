@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class DwarfState : MonoBehaviour
 {
     public int maxHealth = 100;
-    public int currentHealth; // Hacer público para acceso desde otros scripts.
+    public int currentHealth;
     private Animator animator;
     public Slider healthBarSlider;
 
@@ -15,20 +15,20 @@ public class DwarfState : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        healthBarSlider.maxValue = maxHealth; // Configurar el valor máximo del slider.
-        healthBarSlider.value = currentHealth; // Inicializar el slider con la salud actual.
+        healthBarSlider.maxValue = maxHealth;
+        healthBarSlider.value = currentHealth;
         animator = GetComponent<Animator>();
     }
 
     public void UpdateHealthBar()
     {
-        healthBarSlider.value = currentHealth; // Actualizar el slider.
+        healthBarSlider.value = currentHealth;
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        UpdateHealthBar(); // Llamar directamente al actualizar la vida.
+        UpdateHealthBar();
 
         if (currentHealth <= 0)
         {

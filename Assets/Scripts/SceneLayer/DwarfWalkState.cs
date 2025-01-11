@@ -8,7 +8,7 @@ using UnityEditor.Experimental.GraphView;
 public class DwarfWalkState : StateMachineBehaviour
 {
     float timer;
-    public float walkingTime = 10f; //how much animal is still
+    public float walkingTime = 10f;
 
 
     Transform player; // to know if player is close to us
@@ -17,10 +17,8 @@ public class DwarfWalkState : StateMachineBehaviour
     public float detectionAreaRadius = 18f;
     public float walkSpeed = 4f;
 
-    List<Transform> waypointsList = new List<Transform>();// positions around the bear to know where to go
+    List<Transform> waypointsList = new List<Transform>(); // positions around the dwarf to know where to go
 
-
-    // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         // initialize
@@ -43,7 +41,6 @@ public class DwarfWalkState : StateMachineBehaviour
 
     }
 
-    // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         // if arrived at one waypoint, move to other
@@ -69,7 +66,6 @@ public class DwarfWalkState : StateMachineBehaviour
 
     }
 
-    // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         agent.SetDestination(agent.transform.position);

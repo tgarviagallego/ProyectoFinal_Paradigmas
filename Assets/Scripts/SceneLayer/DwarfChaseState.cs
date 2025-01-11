@@ -9,11 +9,9 @@ public class DwarfChaseState : StateMachineBehaviour
     Transform player;
 
     public float chaseSpeed = 14f;
-    public float stopChasingDistance = 21; // a bit bigger than the detection area to keep detecting
+    public float stopChasingDistance = 21f; // a bit bigger than the detection area to keep detecting
     public float attackingDistance = 1f;
 
-
-    // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player = GameObject.FindGameObjectWithTag("Wizard").transform;
@@ -21,7 +19,6 @@ public class DwarfChaseState : StateMachineBehaviour
         agent.speed = chaseSpeed;
     }
 
-    // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         agent.SetDestination(player.position);
@@ -43,7 +40,6 @@ public class DwarfChaseState : StateMachineBehaviour
 
     }
 
-    // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         agent.SetDestination(agent.transform.position);
