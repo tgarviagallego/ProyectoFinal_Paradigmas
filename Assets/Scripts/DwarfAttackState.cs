@@ -10,7 +10,9 @@ public class DwarfAttackState : StateMachineBehaviour
     Transform player;
 
     public float stopAttackingDistance = 2.5f;
-
+    public float attackRate = 1f; //attack rate is one second
+    private float attackTimer;
+    
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -23,6 +25,16 @@ public class DwarfAttackState : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         LookAtPlayer(); //diff to built in LookAt, because it is attacking 
+
+        if (attackTimer <= 0)
+        {
+            attackTimer = 1f / attackRate;
+        }
+        else
+        { 
+            attackTimer -= Time.deltaTime;
+        }
+
 
         // chack if agent hast to stop the attack
         float distanceFromPlayer = Vector3.Distance(player.position, animator.transform.position);

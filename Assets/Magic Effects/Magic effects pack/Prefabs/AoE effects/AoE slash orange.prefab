@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 1175461662703702469}
   - component: {fileID: 2901665419787407899}
   - component: {fileID: 9212833412386566060}
-  m_Layer: 0
+  - component: {fileID: 986506247447437230}
+  - component: {fileID: -1765948465145236838}
+  m_Layer: 15
   m_Name: AoE slash orange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4893,6 +4895,40 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!135 &986506247447437230
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689667626583958020}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.8666989
+  m_Center: {x: -0.1438204, y: 0, z: 0}
+--- !u!114 &-1765948465145236838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689667626583958020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7df0a8c491f9af4b884ade7a55295d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 20
 --- !u!1 &1883585034484120993
 GameObject:
   m_ObjectHideFlags: 0
@@ -4904,7 +4940,7 @@ GameObject:
   - component: {fileID: 3611678170689531142}
   - component: {fileID: 1595746648861366345}
   - component: {fileID: 2372584074572498213}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9810,7 +9846,7 @@ GameObject:
   - component: {fileID: 3396847172213223623}
   - component: {fileID: 2864274740693678021}
   - component: {fileID: 3584934117744274234}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Flares
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14707,7 +14743,7 @@ GameObject:
   - component: {fileID: 8889657401428045141}
   - component: {fileID: 983296534774999383}
   - component: {fileID: 7160783592763126056}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19653,7 +19689,7 @@ GameObject:
   - component: {fileID: 4634052894817328585}
   - component: {fileID: 7585976143170097536}
   - component: {fileID: 2824005854877838304}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Slash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24541,7 +24577,7 @@ GameObject:
   - component: {fileID: 2858295213021141964}
   - component: {fileID: 1759838996291170385}
   - component: {fileID: 2732099183714700759}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: RotatePart
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerState : MonoBehaviour
@@ -21,7 +22,10 @@ public class PlayerState : MonoBehaviour
         }
     }
 
-
+    public void SetHealth(float newHealth) 
+    { 
+        currentHealth = newHealth;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -33,4 +37,14 @@ public class PlayerState : MonoBehaviour
     {
         
     }
+    public void TakeDamage(int damage) 
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
+            Debug.Log("Player is dead");
+        }
+        //if we want to add sound
+    }
+
 }

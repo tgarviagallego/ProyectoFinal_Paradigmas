@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class Spell : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int damageToInflict = 20; 
 
-    // Update is called once per frame
-    void Update()
+    void OnTriggerEnter(Collider other)
     {
-        
+
+        if (other.CompareTag("Dwarf"))
+        {
+
+            DwarfState.Instance.TakeDamage(damageToInflict);
+            //Debug.Log("Auch!");
+
+        }
     }
 }
+

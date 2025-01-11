@@ -20,8 +20,6 @@ public class PlayerController : MonoBehaviour
     private List<string> booleanAnimatorParameterNames;
 
     public GameObject fireSpell;
-    public GameObject iceSpell;
-    public GameObject deadSpell;
     public float spellSpeed = 10f;
     public float maxSpellDistance = 20f;
 
@@ -131,14 +129,6 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 ThrowSpell(fireSpell);
-            }
-            else if (Input.GetKeyDown(KeyCode.Mouse1))
-            {
-                ThrowSpell(iceSpell);
-            }
-            else if (Input.GetKeyDown(KeyCode.Q))
-            {
-                ThrowSpell(deadSpell);
             }
         }
     }

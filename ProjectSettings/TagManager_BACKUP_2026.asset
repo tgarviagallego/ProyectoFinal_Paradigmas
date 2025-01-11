@@ -6,7 +6,11 @@ TagManager:
   tags:
   - Waypoints
   - Wizard
+<<<<<<< HEAD
   - Dwarf
+=======
+  - MenuManager
+>>>>>>> main
   layers:
   - Default
   - TransparentFX
@@ -17,9 +21,9 @@ TagManager:
   - 
   - Axe
   - Player
+  - 
+  - Player
   - Treasure
-  - 
-  - 
   - 
   - 
   - 

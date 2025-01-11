@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Waypoints
   - Wizard
-  - Dwarf
   layers:
   - Default
   - TransparentFX
@@ -15,16 +14,16 @@ TagManager:
   - Water
   - UI
   - 
-  - Axe
-  - Player
-  - Treasure
   - 
   - 
   - 
   - 
   - 
-  - Spell
-  - Dwarf
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 

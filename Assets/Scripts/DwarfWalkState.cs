@@ -32,7 +32,7 @@ public class DwarfWalkState : StateMachineBehaviour
         timer = 0;
 
         // get waypoints and move to the first one
-        GameObject waypointsCluster = animator.GetComponent<MonsterWaypoints>().monsterWaypointsCluster;
+        GameObject waypointsCluster = animator.GetComponent<DwarfWaypoints>().monsterWaypointsCluster;
         foreach (Transform t in waypointsCluster.transform)
         {
             waypointsList.Add(t);
