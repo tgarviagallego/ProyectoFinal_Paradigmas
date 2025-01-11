@@ -5,8 +5,8 @@ namespace SpellboundForest.Enums
         MainMenu,
         Playing,
         Paused,
-        GameOver,
-        Victory
+        Victory,
+        GameOver
     }
 
     public enum SpellType
