@@ -58,6 +58,6 @@ public class DwarfAttackState : StateMachineBehaviour
 
     private void Attack()  // if we have multiple players we have to handle who is attacked
     {
-        PlayerState.Instance.TakeDamage(damageToInflict);
+        //PlayerState.Instance.TakeDamage(damageToInflict);
     }
 }
