@@ -21,7 +21,7 @@ public class GameOverState : GameStateBase
 
     public override void Exit()
     {
-        GameMenuManager?.HideAllMenus();
+        //GameMenuManager?.HideAllMenus();
     }
     public override void Update()
     {

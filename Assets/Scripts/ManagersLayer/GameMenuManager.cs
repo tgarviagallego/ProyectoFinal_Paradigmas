@@ -41,6 +41,7 @@ public class GameMenuManager : MenuManagerBase
         menuCanvas.SetActive(true);
         victoryMenu.gameObject.SetActive(true);
     }
+
     public void ShowGameOverMenu()
     {
         HideAllMenus();

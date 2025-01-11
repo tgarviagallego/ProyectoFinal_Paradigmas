@@ -6,11 +6,10 @@ using UnityEngine;
 
 public class PlayerState : MonoBehaviour
 {
-
     public static PlayerState Instance { get; set; }
     public float currentHealth; // we want to see it in the isnpector, but we can change it later..
     public float maxHealth;
-    //public static event Action<bool> OnPlayerDeath;
+    public static event Action<bool> OnPlayerDeath;
 
     private void Awake()
     {
@@ -44,8 +43,13 @@ public class PlayerState : MonoBehaviour
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
+            OnPlayerDeath?.Invoke(true);
             Debug.Log("Player is dead");
             Destroy(gameObject);
+        }
+        else
+        {
+            OnPlayerDeath?.Invoke(false);
         }
         
     }

@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance => _instance;
 
     private float gameTime;
-    private bool isMultiplayer = false;
     private Dictionary<GameState, IGameState> states;
     private IGameState currentState;
     private string gameSceneName = "GameScene";
@@ -69,12 +68,22 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
         Treasure.OnTreasureFound += HandleTreasureFound;
+        PlayerState.OnPlayerDeath += HandlePlayerDeath;
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         Treasure.OnTreasureFound -= HandleTreasureFound;
+        PlayerState.OnPlayerDeath -= HandlePlayerDeath;
+    }
+
+    private void HandlePlayerDeath(bool isPlayerDeath)
+    {
+        if (isPlayerDeath)
+        {
+            SetState(GameState.GameOver);
+        }
     }
 
     private void HandleTreasureFound(bool found)
@@ -113,7 +122,7 @@ public class GameManager : MonoBehaviour
         }
 
         GameObject wizard = GameObject.Find("Wizard1");
-        spawnManager.SpawnWizard(isMultiplayer);
+        spawnManager.SpawnWizard();
         spawnManager.SpawnTreasure();
         //spawnManager.SpawnDwarves();
     }
