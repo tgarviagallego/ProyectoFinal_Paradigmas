@@ -115,6 +115,7 @@ public class GameManager : MonoBehaviour
         GameObject wizard = GameObject.Find("Wizard1");
         spawnManager.SpawnWizard(isMultiplayer);
         spawnManager.SpawnTreasure();
+        //spawnManager.SpawnDwarves();
     }
 
     private void Update()

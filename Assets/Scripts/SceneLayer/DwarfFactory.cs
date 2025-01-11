@@ -36,12 +36,12 @@ public class DwarfFactory : MonoBehaviour
         GenerateDwarves();
     }
 
-    void GenerateDwarves()
+    public void GenerateDwarves()
     {
-        foreach (Vector3 position in spawnPositions)
+
+        for (int i = 0; i < spawnPositions.Count; i++) 
         {
-            Instantiate(dwarfPrefab, position, Quaternion.identity);
-            Debug.Log("EnanoCreado");
+            Instantiate(dwarfPrefab,spawnPositions[i], Quaternion.identity);    
         }
     }
 }
