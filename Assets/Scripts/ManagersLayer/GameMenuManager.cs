@@ -54,6 +54,8 @@ public class GameMenuManager : MenuManagerBase
         menuCanvas.SetActive(false);
         pauseMenu.gameObject.SetActive(false);
         settingsMenu.SetActive(false);
+        gameOverMenu.gameObject.SetActive(false);
+        victoryMenu.gameObject.SetActive(false);
     }
 
     public override void EnableMenuControls()

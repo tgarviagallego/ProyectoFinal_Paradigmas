@@ -13,15 +13,12 @@ public class DwarfAttackState : StateMachineBehaviour
     public float attackRate = 1f; //attack rate is one second
     private float attackTimer;
     
-
-    // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player = GameObject.FindGameObjectWithTag("Wizard").transform;
         agent = animator.GetComponent<NavMeshAgent>();
     }
 
-    // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         LookAtPlayer(); //diff to built in LookAt, because it is attacking 
@@ -36,7 +33,7 @@ public class DwarfAttackState : StateMachineBehaviour
         }
 
 
-        // chack if agent hast to stop the attack
+        // check if agent has to stop the attack
         float distanceFromPlayer = Vector3.Distance(player.position, animator.transform.position);
         if (distanceFromPlayer > stopAttackingDistance)
         {
@@ -50,8 +47,6 @@ public class DwarfAttackState : StateMachineBehaviour
         agent.transform.rotation = Quaternion.LookRotation(direction);
 
         var yRotation = agent.transform.eulerAngles.y;
-        agent.transform.rotation = Quaternion.Euler(0, yRotation, 0); // if for example thep kayer is higher not to rotate
+        agent.transform.rotation = Quaternion.Euler(0, yRotation, 0); // if for example the player is higher not to rotate
     }
-
-    // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 }

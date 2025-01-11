@@ -5,8 +5,7 @@ using UnityEngine.AI;
 
 public class AxeDamage : MonoBehaviour
 {
-    //Transform player;
-    public int damageToInflict = 1; // Daño infligido por el hacha.
+    public int damageToInflict = 1;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -15,8 +14,6 @@ public class AxeDamage : MonoBehaviour
         {
             
             PlayerState.Instance.TakeDamage(damageToInflict); 
-            //Debug.Log("Wizard! You are being hurt by the dwarf!.");
-            
         }
     }
 }

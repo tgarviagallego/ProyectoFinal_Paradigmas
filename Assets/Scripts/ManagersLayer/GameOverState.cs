@@ -21,14 +21,15 @@ public class GameOverState : GameStateBase
 
     public override void Exit()
     {
-        //GameMenuManager?.HideAllMenus();
+        GameMenuManager?.HideAllMenus();
     }
+
     public override void Update()
     {
         if (Input.anyKeyDown)
         {
-            Debug.Log("Quitting game");
-            Application.Quit();
+            Time.timeScale = 1f;
+            GameManager.Instance.ReturnToMainMenu();
         }
     }
 }
