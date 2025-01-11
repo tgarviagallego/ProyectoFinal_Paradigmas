@@ -15,7 +15,6 @@ public class SpellFactory : MonoBehaviour
             case "Fire":
                 spell = Instantiate(fireSpellPrefab, position, rotation);
                 break;
-             // ampliable en el futuro
         }
 
         return spell;
