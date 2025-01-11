@@ -10,12 +10,14 @@ public class SpawnManager : MonoBehaviour
     private static SpawnManager _instance;
     public static SpawnManager Instance => _instance;
 
-    //private WizardFactory wizardFactory = FindObjectOfType<WizardFactory>();
-    //private SpellFactory spellFactory = FindObjectOfType<SpellFactory>();
-    //private MonsterFactory monsterFactory = FindObjectOfType<MonsterFactory>();
+    [SerializeField] private GameObject treasurePrefab;
+    private GameObject treasure;
+    public GameObject Treasure => treasure;
+
     private GameObject wizard;
 
     private List<Vector3> wizardSpawnPoints = new List<Vector3>();
+    private List<Vector3> treasureSpawnPoints = new List<Vector3>();
 
     public List<GameObject> Wizards = new List<GameObject>();
     private void Awake()
@@ -24,6 +26,7 @@ public class SpawnManager : MonoBehaviour
         {
             _instance = this;
             InitializeWizardSpawnPoints();
+            InitializeTreasureSpawnPoints();
             wizard = GameObject.Find("Wizard1");
         }
         else
@@ -31,11 +34,6 @@ public class SpawnManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    //public void SpawnMonster(MonsterType type, Vector3 position)
-    //{
-    //    monsterFactory.CreateMonster(type, position);
-    //}
 
     public void SpawnWizard(bool isMultiplayer)
     {
@@ -54,7 +52,7 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    internal void InitializeWizardSpawnPoints()
+    public void InitializeWizardSpawnPoints()
     {
         wizardSpawnPoints = new List<Vector3>()
         {
@@ -71,13 +69,21 @@ public class SpawnManager : MonoBehaviour
         };
     }
 
-    internal void SpawnMultiplayerWizards()
+    public void InitializeTreasureSpawnPoints()
     {
-        throw new NotImplementedException();
+        treasureSpawnPoints = new List<Vector3>()
+        {
+            new Vector3(725.7041f, 9.671993f, 136.3676f),
+            new Vector3(66.69225f, 39.50972f, 128.7362f),
+            new Vector3(725.7041f, 9.671993f, 136.3676f),
+            new Vector3(725.7041f, 9.671993f, 136.3676f),
+            new Vector3(725.7041f, 9.671993f, 136.3676f)
+        };
     }
 
-    internal void SpawnSinglePlayerWizard()
+    public void SpawnTreasure()
     {
-        throw new NotImplementedException();
+        int randomAppearancePointIndex = UnityEngine.Random.Range(0, treasureSpawnPoints.Count);
+        treasure = Instantiate(treasurePrefab, treasureSpawnPoints[randomAppearancePointIndex], Quaternion.identity);
     }
 }

@@ -68,11 +68,21 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        Treasure.OnTreasureFound += HandleTreasureFound;
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        Treasure.OnTreasureFound -= HandleTreasureFound;
+    }
+
+    private void HandleTreasureFound(bool found)
+    {
+        if (found)
+        {
+            SetState(GameState.Victory);
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -86,6 +96,7 @@ public class GameManager : MonoBehaviour
         else if (scene.name == mainMenuSceneName)
         {
             InitializeStatesForMainMenu();
+            SetState(GameState.MainMenu);
         }
     }
 
@@ -103,13 +114,7 @@ public class GameManager : MonoBehaviour
 
         GameObject wizard = GameObject.Find("Wizard1");
         spawnManager.SpawnWizard(isMultiplayer);
-    }
-
-    private void InitializeGameScene()
-    {
-        GameObject wizard = GameObject.Find("Wizard1");
-
-        // spawnManager.SpawnWizard(isMultiplayer);
+        spawnManager.SpawnTreasure();
     }
 
     private void Update()
@@ -132,6 +137,7 @@ public class GameManager : MonoBehaviour
     {
         gameTime = 0f;
         LoadGameScene();
+        SetState(GameState.Playing);
     }
 
     public void UpdateGameTime(float time)

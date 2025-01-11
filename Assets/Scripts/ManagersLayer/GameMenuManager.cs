@@ -11,6 +11,7 @@ public class GameMenuManager : MenuManagerBase
     [SerializeField] private PlayerController playerController;
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject settingsMenu;
+    [SerializeField] private GameObject victoryMenu;
 
     private void Awake()
     {
@@ -31,6 +32,13 @@ public class GameMenuManager : MenuManagerBase
         HideAllMenus();
         menuCanvas.SetActive(true);
         pauseMenu.gameObject.SetActive(true);
+    }
+
+    public void ShowVictoryMenu()
+    {
+        HideAllMenus();
+        menuCanvas.SetActive(true);
+        victoryMenu.gameObject.SetActive(true);
     }
 
     public override void HideAllMenus()
